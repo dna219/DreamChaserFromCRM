@@ -1,0 +1,147 @@
+Tìm hiểu về công cụ search engine: Thống kê phương pháp + ưu/nhược điểm
+-> Thử thách của các phương pháp này (list)
+
+Tìm hiểu về các công cụ sync database
+-> Giải quyết checklist thử thách vừa đặt ra
+
+    I. Tìm hiểu về công cụ Search Engine
+
+0. Lucene (Apache Lucene)
+Lucene là phần mềm mã nguồn mở, dùng để phân tích, đánh chỉ mục và tìm kiếm thông tin với hiệu suất cao, Lucene được viết bằng java. Lucene không phải là một ứng dụng mà chỉ là một công cụ đặc tả API cần thiết cho việc một search engine
+
+
+    1. Elasticsearch
+Elasticsearch được xây dựng trên Lucene và cung cấp API REST dựa trên JSON để tham khảo các tính năng của Lucene. Elasticsearch cung cấp một hệ thống phân tán trên đỉnh Lucene . Một hệ thống phân tán không phải là thứ mà Lucene nhận thức được hoặc được xây dựng cho. Elasticsearch cung cấp sự trừu tượng hóa của cấu trúc phân tán.
+
+Elasticsearch là một công cụ tìm kiếm mã nguồn mở (search engine). Elasticsearch không chỉ là một công cụ tìm kiếm theo text thông thường theo dạng key-value, nó còn được sử dụng làm một công cụ phân tích, hỗ trợ cả những chức năng tổng hợp dữ liệu phức tạp. 
+Elasticsearch hỗ trợ các chức năng như autocomplete (tự động hoàn thành), geo-location based filter (lọc dựa trên vị trí địa lý), multilevel aggregtions (tổng hợp dữ liệu đa tầng), ngoài ra còn rất thân thiện với người dùng.
+    a. Document
+Dữ liệu (document) được lưu trong Elasticsearch dưới dạng JSON, vì dữ liệu dạng JSON rất ngắn gọn, linh hoạt và dễ dàng mở rộng. Elasticsearch được xây dựng để xử lý unstructured data (dữ liệu không có cấu trúc) và có thể tự động xác định được kiểu dữ liệu của từng field (trường) trong dữ liệu. 
+Ngoài ra, với Elasticsearch, ta có thể mở rộng tập dữ liệu mà không cần phải thêm hay thay đổi schema gốc. Điều này được gọi là dynamic mapping (ánh xạ động).
+
+    b. Cluster and node 
+Khác với hệ cơ sở dữ liệu truyền thống, trong đó người dùng thường dùng 1 server cho tất cả các request, Elasticsearch là một hệ thống phân tán, có nghĩa là nó được tạo nên từ một server hoặc nhiều hơn, tất cả đều hành động như một ứng dụng thống nhất. Điều này làm nó có thể mở rộng và xử lý request tốt hơn một server duy nhất. Mỗi server chứa một phần dữ liệu, ta có thể bắt đầu Elasticsearch với chỉ một server và có thể thêm server khi có nhiều dữ liệu hơn.
+    c. Interacting with Elasticsearch
+Phương pháp chính để giao tiếp với Elasticsearch là thông qua REST API. Người dùng có thể làm tất cả mọi thứ từ việc thêm dữ liệu cho đến tắt một server chỉ thông qua một lần gọi API. 
+    d. Tầm quan trọng của việc truy vấn dữ liệu
+Dữ liệu lớn được tăng theo cấp số nhân. Tuy nhiên nếu không có cách để lấy được thông tin hay truy vấn dữ liệu một cách nhanh chóng, dữ liệu lớn được lưu trữ sẽ không có tác dụng gì. 
+Cho nên những hệ thống giúp truy vấn dữ liệu một cách nhanh chóng cực kỳ quan trọng, và đây cũng là một ưu điểm của ElasticSearch.
+    e. Ưu điểm và nhược điểm của Elasticsearch so với việc sử dụng sql truyền thống
+Ưu điểm: 
+    • Rất linh hoạt (Hỗ trợ API REST dựa trên JSON, client có thể được viết bằng nhiều ngôn ngữ, java, python…, Hỗ trợ lọc, sắp xếp, phân trang và tổng hợp dữ liệu trên cùng truy vấn)
+    • Tự động ánh xạ (mapping) dữ liệu: Trong sql bình thường, ta sẽ phải định nghĩa database schema trước khi thêm dữ liệu, còn elasticsearch có thể xử lý dữ liệu không cấu trúc một cách tự động, và thêm/xóa một cách tự động
+    • Khả năng mở rộng cao
+    • Phân tích và tổng hợp dữ liệu: ElasticSearch có khả năng phân tích dữ liệu cực mạnh, ngoài ra còn tổng hợp dữ liệu dễ dàng. Điều này làm cho nó hơn hẳn các phương pháp khác.
+    • Hiệu năng cực tốt do tính chất phân tán của dữ liệu, tìm kiếm real-time
+    • Cache tự động
+Nhược điểm:
+    • Not real time mà chỉ là Near real time
+    • Không hỗ trợ join như sql mà hỗ trợ kiểu cha-con cho quan hệ
+    • Không hỗ trợ transaction và rollback do transaction trong một hệ thống dữ liệu phân tán rất đắt đỏ. ElasticSearch hỗ trợ kiểm soát kiểu phiên bản
+    • Cập nhật dữ liệu khó khăn do ElasticSearch chỉ hỗ trợ xóa và thêm.
+    • Có khả năng (mặc dù nhỏ) mất dữ liệu
+
+2. Solr
+Solr (phát âm là Solar) là một công cụ tìm kiếm mã nguồn mở được xây dựng dựa trên Lucene, giống ELTs. Cũng giống như ELTS, Solr truy vấn dữ liệu theo dạng JSON.
+Solr tập trung vào tìm kiếm văn bản 
+Solr hỗ trợ JSON nhưng tính năng này gần đây mới có, trước đó ngôn ngữ chính của nó là XML
+Solr khá cũ so với ELTs. Nó có một community khá lớn so với ELTs, là một công cụ mã nguồn mở đúng nghĩa vì ai cũng có thể đóng góp cho dự án.
+
+    a. Đặc điểm
+Khả năng tìm kiếm văn bản toàn diện(Full-Text Search)
+Dựa trên các chuẩn mở trong giao tiếp với các hệ thống khác – XML, JSON và HTTP
+Khả năng mở rộng ra nhiều server Solr
+Cấu hình đơn giản dễ dàng với định dạng XML
+Solr cũng sắp hỗ trợ realtime cho phép tìm kiếm ngay kết quả sau khi index. Điều nàyđặc biệt khó khi index rất lớn. Hiện tại Solr cho phép kết quả rât nhanh, nhưng phải hy sinh thời gian index.
+Solr cũng có thể dùng như CSDL NoSQL hay như cache layer, dùng cho các listing cần performance tốt.
+
+    b. Ưu/nhược điểm
+Ưu điểm
+    1. Faceted search
+Tìm kiếm theo khía cạnh, Solr có khả năng tìm kiếm dựa theo facet xuất sắc, nó cung cấp giải pháp hoàn hảo cho các trang web thương mại
+
+2. Tập hợp các tính năng
+
+Solr có thể cung cấp tính năng full text search hiêu quả với khả năng cấu hình cao ( thậm chí nhiều hơn Elasticsearch ). Sorl hỗ trợ thực hiện đa dạng các gợi ý, làm nổi bật các chức năng và có bộ kiểm tra cú pháp "Did you mean?" ( cái mà không có trong ES )
+
+3. Đa dạng nội dung các tài liệu
+Solr là một trong số ít các công cụ tìm kiếm có thể đọc các tài liệu với nội dung đa dạng, bao gồm PDF, Word, XML, hay text thông thường. Điều này thật hoàn hào với các dự án mà cần phải tìm kiếm qua một số lượng lớn các file PDF hay Word trong trang web ( VD các hợp đồng, bản tóm tắt, các tài liệu học, sách, ... )
+
+4. Trực quan hoá dữ liệu
+
+Banana là một công cụ trực quan hoá ( được fork từ Kibana ) để làm việc cùng với Solr, cho phép các admin theo dõi các sự kiện hay log ở màn hình dashboard. giảm bớt quá trình tìm kiếm thủ công bằng log.
+
+5. Học máy
+
+Solr, khi hoạt động với Bloomberg, đã được cài đặt khả năng Học máy để sử dụng khái niệm đánh giá lại các tài liệu dựa theo điểm thông qua nhiều truy vấn phức tạp. Học máy hướng đến người dùng các trải nghiệm tốt hơn về tìm kiếm ngay lập tức cho hầu hết các công ty, con người và tin tức.
+
+Nhược điểm
+Solr không nhanh bằng Elasticsearch và chỉ làm việc tốt với các dữ liệu tĩnh ( không yêu cầu thay đổi thường xuyên ). Lý do là vì cache. Với Solr, cache là toàn cục, nghĩa là chỉ với một thay đổi nhỏ xảy ra trong cache, tất cả index được yêu cầu cập nhật. Điều này dẫn đến rất tốn thời gian. Ngược lại, với Elastic, quá trình cập nhật được chia thành từng phần.
+
+
+3. InfluxDB
+InfluxDB là TSDB (Time-series database), Cơ sở dữ liệu chuỗi thời gian. Việc lưu trữ và truy vấn dữ liệu được tối ưu hóa cho các điểm dữ liệu có thành phần thời gian. 
+Cơ sở dữ liệu chuỗi thời gian (Time-Series Database) có thể được định nghĩa là các điểm dữ liệu được lập chỉ mục theo thứ tự thời gian của chúng, trong đó khoảng cách giữa hai điểm dữ liệu có thể bằng hoặc không. Nếu tần suất tại đó các điểm dữ liệu được lấy là không đổi (ví dụ: lấy mẫu dữ liệu sau mỗi 10 ms) thì chuỗi được gọi là chuỗi dữ liệu thời gian rời rạc.
+Trong hệ thống máy tính, tất cả dữ liệu người dùng có thể được biểu diễn dưới dạng Cơ sở dữ liệu chuỗi thời gian (Time-Series Database), vì tất cả thông tin được lưu trữ đều có thành phần thời gian có thể cung cấp các số liệu khác nhau trong các tình huống khác nhau.
+Ví dụ: Twitter, Facebook và LinkedIn có dữ liệu về ngày đăng ký của người dùng, cũng như ngày và giờ mà các hành động khác nhau được thực hiện (tweet hoặc bài viết được đăng, hoạt động thích, v.v.).
+Một số ứng dụng của Cơ sở dữ liệu chuỗi thời gian:
+    • Internet of Things: Công nghệ nhà thông minh thể hiện một số thứ thông minh như đồng hồ đo điện, nước hoặc sưởi thông minh. Chúng ghi lại mức tiêu thụ điện, nước và năng lượng để sưởi ấm một ngôi nhà, tương ứng. Dữ liệu thường được thu thập hàng giờ, cung cấp cho chủ sở hữu ngôi nhà thông tin thanh toán theo thời gian thực. Trong thời gian dài, các môi trường hỗ trợ cơ sở dữ liệu IoT như vậy lưu trữ rất nhiều dữ liệu. Việc phân tích dữ liệu này có thể cho thấy các mô hình sử dụng tài nguyên theo mùa, xác định các khu vực tiêu thụ kém hiệu quả và dự báo các cách có thể để đạt được mức tiêu thụ không lãng phí với hiệu quả tối đa về nguồn lực và chi phí tối thiểu
+    • Hệ thống an ninh thông minh phát hiện đột nhập: Chúng cũng có thể được sử dụng để ghi lại thông tin ra vào của công nhân, ghi lại thời gian quá tải và phân tích cách chúng phù hợp với năng suất của từng công nhân cụ thể.
+    • Cơ sở dữ liệu IoT trong hệ thống thương mại điện tử: ưu trữ tất cả thông tin khách hàng từ số tiền giao dịch đến dữ liệu thanh toán
+    • IoT trong tái chế năng lượng: cối xay gió với các cảm biến tích hợp để đo tốc độ gió, cũng như điện được sản xuất.
+Đặc điểm của InfluxDB:
+    • InfluxDB sử dụng truy vấn SQL để truy xuất dữ liệu được lưu trữ theo kiểu cặp khóa-giá trị (key-value).
+    • hỗ trợ dữ liệu qua các giao thức HTTP, TCP và UDP.
+    • có thể được sử dụng trong các ứng dụng yêu cầu giám sát dữ liệu trong một khoảng thời gian nhất định như dữ liệu cảm biến.
+    • Việc ghi dữ liệu lên InfluxDB có thể được thực hiện theo nhiều cách. Bạn có thể sử dụng giao diện dòng lệnh được cung cấp, các thư viện ứng dụng khách cho ngôn ngữ của bạn hoặc API REST được cung cấp cho cả việc đọc và ghi dữ liệu vào cơ sở dữ liệu. API này cũng cho phép bạn tạo hoặc xóa cơ sở dữ liệu và bảng.
+    • Hỗ trợ cho các truy vấn tổng hợp được tích hợp trong InfluxDB và có thể được truy cập thông qua giao diện SQL và REST. Một số hàm có sẵn để tổng hợp là COUNT (), DISTINCT (), INTEGRAL (), MEAN (), MEDIAN (), MODE (), SPREAD (), STDDEV () và SUM () .
+    • InfluxDB cũng cung cấp một giao diện người dùng đơn giản, nơi bạn có thể chạy các truy vấn trên cơ sở dữ liệu, xem dữ liệu ở dạng bảng và cũng có thể thực thi một số hoạt động
+Ưu/nhược điểm của InfluxDB:
+Ưu điểm:
+    • Hạn chế xóa và cập nhật làm tăng hiệu suất truy vấn và thêm mới
+    • Thêm dữ liệu theo thứ tự tăng dần theo thời gian hiệu quả hơn đáng kể
+    • Cơ sở dữ liệu có thể xử lý một lượng lớn các lần đọc và ghi
+    • Việc ghi và truy vấn cơ sở dữ liệu có thể được thực hiện bởi nhiều máy client và ở mức tải cao
+    • InfluxDB rất tốt trong việc quản lý dữ liệu không liên tục.
+    • InfluxDB có các công cụ rất mạnh để xử lý dữ liệu tổng hợp và tập dữ liệu lớn.
+Nhược điểm:
+    • Không thể lưu trữ dữ liệu trùng lặp; có thể ghi đè dữ liệu trong một số trường hợp
+    • Xóa và cập nhật dữ liệu bị hạn chế
+    • Trả về truy vấn có thể không bao gồm các điểm gần đây nhất nếu cơ sở dữ liệu đang tải nặng
+
+4. Algolia
+
+Algolia là một công cụ tìm kiếm cung cấp các tìm kiếm trên web thông qua mô hình Saas, (phần mềm như một dịch vụ). Algolia cũng cung cấp các dịch vụ thông qua một công cụ tìm kiếm được lưu trữ bên ngoài. Nó chủ yếu bao gồm hai chức năng, phân tích tìm kiếm và triển khai tìm kiếm. Algolia được phát triển hoàn toàn bằng c ++.
+
+Đặc điểm của Algolia:
+    • Hỗ trợ các API back-end bằng nhiều ngôn ngữ khác nhau.
+    • Cùng với các API, nó cũng cung cấp tiện ích giao diện người dùng để có trải nghiệm người dùng tốt hơn. Algolia có giao diện tốt hơn vì nó có trang tổng quan với nhiều bộ lọc khác nhau mà người dùng có thể định cấu hình để xem hành vi / lịch sử của người dùng hoặc bất kỳ dữ liệu cho vấn đề nào đó một cách đơn giản.
+    • Tài liệu phong phú và mở rộng giúp sử dụng / phát triển ứng dụng tốt hơn
+Ưu/nhược điểm:
+Ưu điểm:
+    • Dễ dàng tích hợp, cả back và front
+    • Truy vấn tìm kiếm mạnh mẽ, dễ sử dụng và tài liệu được thực hiện cực kỳ tốt.
+    • Algolia cung cấp gói miễn phí.
+    • Giao diện quản lý dễ sử dụng cho phép bạn theo dõi, truy vết và giám sát các hoạt động tìm kiếm.
+    • Cung cấp các API Client cho nhiều ngôn ngữ như JavaScript, Node.js, Go, Php.
+Nhược điểm:
+    • Đắt tiền. Gói free của Algolia cho phép 1000 records và 50000 operation một tháng
+    • Live search sử dụng public API key trên javascript ở client, điều này có lẽ dễ dẫn đến tình trạng bị những kẻ xấu lợi dụng tấn công tiêu tốn chi phí API.
+
+
+5. Sphinx
+Sphinx đã được phát triển trong những năm gần đầy, và đã trở thành một công cụ tìm kiếm gần đạt thời gian thực. Nó đã đạt tốc độ hơn 500 truy vấn một giây cho 1 triệu tài liệu, với số lượng đăng ký index lớn nhất là đạt 25 tỷ tài liệu.
+
+Ưu điểm:
+    1. Đầy sức mạnh và nhanh
+Nếu bạn cần các chức năng tìm kiếm thông thường, và không cần các tính năng bổ sung như trực quan hoá dữ liệu và phân tích, hãy sử dụng Sphinx. Nó khá nhanh và đầy sức mạnh cho khả năng index và truy vấn một khối lượng lớn các tài liệu mả chỉ sử dụng giới hạn nguồn tài nguyên máy tính, không giống như Elasticsearch, tiêu thụ khá nhiều bộ nhớ.
+Một trong những ví dụ đó là Boardreader, Sphinx có thể index tới 16 tỷ tài liệu thông qua 37 thiết bị.
+
+2. Faceted search
+Sphinx có một trải nghiệm tuyệt vời với faceted search
+Trang video lớn nhất của trung quốc, Youku Tudou, sử dụng Sphinx để faceted search cho các nội dung, được phân bố cho 400 triệu người dùng mỗi tháng, với đỉnh điểm khối lượng sử dụng đạt 15,000 truy vấn mỗi giây.
+Greenice gần đây cũng sử dụng Sphix cho các cửa hàng kinh doanh phần cứng máy tính. Faceted search được sử dụng với các thuộc tính như nhãn hàng, loại, mục đích dùng, độ phân giải màn hình, dung lượng HDD, dung lượng SSD, ...
+
+Nhược điểm:
+Sphinx rất tốt cho các dữ liệu có cấu trúc ( đinh nghĩa các trường text và các thuộc tính không phải là text ), nhưng nó không phải là sự lựa chọn tốt nhất cho các dự án mà cần xử lý các dữ liệu không cấu trúc ( DOC, PDF, MP3, ... ), khi đó chúng ta sẽ cần phải tốn khá nhiều thời gian để cấu hình.
+
